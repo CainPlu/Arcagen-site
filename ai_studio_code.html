@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcagen | Sovereign Intelligence. Locally Forged.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #020205;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .serif { font-family: 'Playfair Display', serif; }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #0a0a1a 0%, #020205 100%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: #5B5BD6;
+            background: rgba(91, 91, 214, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #5B5BD6 0%, #3f3fb1 100%);
+            box-shadow: 0 0 20px rgba(91, 91, 214, 0.4);
+        }
+
+        .purple-glow {
+            text-shadow: 0 0 15px rgba(91, 91, 214, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-container"></canvas>
+
+    <!-- Navigation -->
+    <nav class="flex justify-between items-center px-10 py-6 absolute w-full z-10">
+        <div class="flex items-center gap-2">
+            <!-- Replace with your logo image -->
+            <div class="w-8 h-8 bg-[#5B5BD6] rounded-sm rotate-45 flex items-center justify-center">
+                <div class="w-4 h-4 bg-white rounded-full"></div>
+            </div>
+            <span class="text-2xl font-bold tracking-tighter">ARCAGEN</span>
+        </div>
+        <div class="hidden md:flex gap-8 text-sm font-medium text-gray-400">
+            <a href="#" class="hover:text-white">Solutions</a>
+            <a href="#" class="hover:text-white">Hardware</a>
+            <a href="#" class="hover:text-white">Pricing</a>
+            <a href="#" class="hover:text-white">Privacy</a>
+        </div>
+        <button class="border border-white/20 px-6 py-2 rounded-full text-sm hover:bg-white hover:text-black transition">Book a Consultation</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="h-screen flex flex-col justify-center items-center text-center px-6">
+        <div class="inline-block px-4 py-1 border border-[#5B5BD6]/30 bg-[#5B5BD6]/10 rounded-full text-[#5B5BD6] text-xs font-bold mb-6 tracking-widest">
+            AI THAT STAYS IN THE ROOM
+        </div>
+        <h1 class="serif text-6xl md:text-8xl mb-6 max-w-4xl leading-tight">
+            Sovereign Intelligence. <br>
+            <span class="italic text-gray-400">Locally Forged.</span>
+        </h1>
+        <p class="text-gray-400 max-w-xl text-lg mb-10">
+            Arcagen is a physical hardware-software hybrid that arrives pre-configured. 
+            Automate your business without cloud subscriptions or data leaks.
+        </p>
+        <div class="flex flex-col md:flex-row gap-4">
+            <button class="btn-primary px-10 py-4 rounded-full font-bold">Explore Solutions</button>
+            <button class="bg-white/5 hover:bg-white/10 px-10 py-4 rounded-full font-bold transition">Watch Demo</button>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 px-10 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="glass-card p-10 rounded-3xl text-center">
+            <div class="text-5xl font-bold mb-2 purple-glow">7 hrs</div>
+            <div class="text-gray-400 text-sm uppercase tracking-widest">Avg admin waste saved/wk</div>
+        </div>
+        <div class="glass-card p-10 rounded-3xl text-center">
+            <div class="text-5xl font-bold mb-2 purple-glow">$18k</div>
+            <div class="text-gray-400 text-sm uppercase tracking-widest">Annual cost at $50/hr</div>
+        </div>
+        <div class="glass-card p-10 rounded-3xl text-center">
+            <div class="text-5xl font-bold mb-2 purple-glow">$0</div>
+            <div class="text-gray-400 text-sm uppercase tracking-widest">Per-query AI cost, forever</div>
+        </div>
+    </section>
+
+    <!-- Pricing / Tiers -->
+    <section class="py-32 px-10">
+        <h2 class="serif text-5xl text-center mb-16">Hardware Tiers</h2>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Starter -->
+            <div class="glass-card p-8 rounded-[40px] flex flex-col">
+                <h3 class="text-xl font-bold mb-4">Starter</h3>
+                <p class="text-gray-500 mb-8">Best for solo operators and low volume tasks.</p>
+                <div class="text-4xl font-bold mb-8">$1,800</div>
+                <ul class="text-sm space-y-4 text-gray-400 mb-10 flex-grow">
+                    <li>✓ Mac Mini M4 (16GB)</li>
+                    <li>✓ Gemma 4 (4B–8B)</li>
+                    <li>✓ Single Agent Config</li>
+                    <li>✓ 100% Offline Processing</li>
+                </ul>
+                <button class="w-full py-4 rounded-2xl border border-white/10 hover:bg-white hover:text-black transition">Choose Starter</button>
+            </div>
+            <!-- Pro -->
+            <div class="glass-card p-8 rounded-[40px] flex flex-col border-[#5B5BD6]/50 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-[#5B5BD6] text-white px-6 py-1 text-xs font-bold uppercase tracking-widest">Recommended</div>
+                <h3 class="text-xl font-bold mb-4">Pro</h3>
+                <p class="text-gray-500 mb-8">Full automation for teams of 2–10.</p>
+                <div class="text-4xl font-bold mb-8">$3,000</div>
+                <ul class="text-sm space-y-4 text-gray-400 mb-10 flex-grow">
+                    <li>✓ Mac Mini M4 Pro (24–48GB)</li>
+                    <li>✓ Gemma 4 (26B MoE)</li>
+                    <li>✓ Multi-system Integrations</li>
+                    <li>✓ Local Voice Control</li>
+                </ul>
+                <button class="w-full py-4 rounded-2xl btn-primary font-bold">Choose Pro</button>
+            </div>
+            <!-- Power -->
+            <div class="glass-card p-8 rounded-[40px] flex flex-col">
+                <h3 class="text-xl font-bold mb-4">Power</h3>
+                <p class="text-gray-500 mb-8">Heavy document volume and multi-user.</p>
+                <div class="text-4xl font-bold mb-8">$5,000</div>
+                <ul class="text-sm space-y-4 text-gray-400 mb-10 flex-grow">
+                    <li>✓ Mac Mini M4 Max (64GB)</li>
+                    <li>✓ Gemma 4 (31B dense)</li>
+                    <li>✓ High-speed Knowledge Base</li>
+                    <li>✓ Priority Update Support</li>
+                </ul>
+                <button class="w-full py-4 rounded-2xl border border-white/10 hover:bg-white hover:text-black transition">Choose Power</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-10 border-t border-white/5 text-center">
+        <div class="text-gray-500 text-sm">
+            © 2026 Arcagen. Sovereign Intelligence. Locally Forged. <br>
+            All hardware is custom-configured Apple Silicon.
+        </div>
+    </footer>
+
+    <script>
+        // Animated Background (Neural Mesh)
+        const canvas = document.getElementById('canvas-container');
+        const ctx = canvas.getContext('2d');
+        let points = [];
+        const numPoints = 100;
+        const maxDistance = 150;
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            points = [];
+            for (let i = 0; i < numPoints; i++) {
+                points.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(91, 91, 214, 0.5)";
+            ctx.strokeStyle = "rgba(91, 91, 214, 0.1)";
+
+            for (let i = 0; i < points.length; i++) {
+                let p = points[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                for (let j = i + 1; j < points.length; j++) {
+                    let p2 = points[j];
+                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < maxDistance) {
+                        ctx.lineWidth = 1 - dist / maxDistance;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        animate();
+    </script>
+</body>
+</html>
