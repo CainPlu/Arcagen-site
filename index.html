@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free AI Audit — Arcagen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:            #000000;
+    --bg-card:       #0a060f;
+    --bg-card2:      #0d0a14;
+    --border:        rgba(255,255,255,0.07);
+    --border-purple: rgba(138,80,204,0.3);
+    --purple-bright: #a767f3;
+    --purple-mid:    #8650cc;
+    --purple-btn:    linear-gradient(135deg, #a767f3 0%, #6b35c4 100%);
+    --text:          #ffffff;
+    --text-muted:    #8a869a;
+    --text-dim:      #3f3a52;
+    --font: 'Inter', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    animation: twinkle var(--d) ease-in-out infinite;
+    animation-delay: var(--dl);
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: var(--lo); }
+    50%      { opacity: var(--hi); }
+  }
+
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(90px);
+  }
+  .orb-hero {
+    width: 700px; height: 700px;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(134,80,204,0.18) 0%, rgba(91,47,160,0.08) 50%, transparent 70%);
+  }
+  .orb-bottom {
+    width: 500px; height: 500px;
+    bottom: -150px; left: -100px;
+    background: radial-gradient(circle, rgba(134,80,204,0.14) 0%, transparent 70%);
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 64px;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none; font-size: 17px; font-weight: 600;
+    color: var(--text); letter-spacing: -0.01em;
+  }
+  .logo-ring {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #a767f3, #5b2fa0);
+    border-radius: 50%; position: relative; flex-shrink: 0;
+  }
+  .logo-ring::after {
+    content: ''; position: absolute; inset: 4px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    border-top-color: transparent; border-right-color: transparent;
+    transform: rotate(-30deg);
+  }
+
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a {
+    font-size: 14px; color: var(--text-muted); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: linear-gradient(135deg, #a767f3, #6b35c4) !important;
+    color: #fff !important;
+    padding: 9px 20px; border-radius: 8px;
+    font-size: 13px !important; font-weight: 600 !important;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; transform: translateY(-1px); color: #fff !important; }
+
+  .page-header {
+    padding: 52px 40px 36px;
+    max-width: 1380px; margin: 0 auto;
+    position: relative; z-index: 1;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(167,103,243,0.1);
+    border: 1px solid rgba(167,103,243,0.25);
+    color: #c49df8;
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 0.02em; margin-bottom: 20px;
+  }
+  .badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: #a767f3; border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:0.3; transform:scale(1.6); }
+  }
+
+  .page-header h1 {
+    font-size: clamp(26px, 3vw, 40px);
+    font-weight: 700; letter-spacing: -0.03em; line-height: 1.15;
+    margin-bottom: 12px; max-width: 640px;
+    background: linear-gradient(135deg, #ffffff 0%, #d4b3fb 55%, #a767f3 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .page-header p {
+    color: var(--text-muted); font-size: 15px; font-weight: 300;
+    max-width: 500px; line-height: 1.65;
+  }
+
+  .audit-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    max-width: 1380px; margin: 0 auto;
+    border: 1px solid var(--border-purple);
+    border-radius: 16px; overflow: hidden;
+    position: relative; z-index: 1;
+    background: var(--bg-card);
+    box-shadow: 0 0 80px rgba(134,80,204,0.08);
+  }
+
+  .form-panel {
+    padding: 40px;
+    border-right: 1px solid var(--border);
+  }
+
+  .panel-title {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 28px;
+  }
+
+  .form-group { margin-bottom: 16px; }
+
+  .form-label {
+    display: block; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 7px;
+  }
+
+  .form-input {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 11px 14px; font-family: var(--font);
+    font-size: 14px; color: var(--text);
+    outline: none; border-radius: 8px;
+    transition: border-color 0.2s, background 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-input:focus {
+    border-color: rgba(167,103,243,0.45);
+    background: rgba(167,103,243,0.05);
+  }
+  .form-input::placeholder { color: #2e2a3a; }
+  .form-input option { background: #130e1e; color: #fff; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  select.form-input {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b5fa8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .pain-divider { border: none; border-top: 1px solid var(--border); margin: 22px 0 20px; }
+  .pain-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .pain-subtitle { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; }
+
+  .pain-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+  .pain-label { font-size: 13px; font-weight: 400; color: var(--text-muted); min-width: 130px; }
+  .pain-numbers { display: flex; gap: 5px; }
+
+  .pain-btn {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.02);
+    font-family: var(--font); font-size: 12px; font-weight: 500;
+    color: var(--text-dim); cursor: pointer; border-radius: 6px;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pain-btn:hover {
+    border-color: rgba(167,103,243,0.4);
+    color: #c49df8; background: rgba(167,103,243,0.07);
+  }
+  .pain-btn.active {
+    background: linear-gradient(135deg, #a767f3, #6b35c4);
+    border-color: #a767f3; color: #fff;
+    box-shadow: 0 3px 14px rgba(167,103,243,0.4);
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #a767f3, #6b35c4);
+    border: none; padding: 16px 24px;
+    font-family: var(--font); font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: #fff; cursor: pointer; margin-top: 22px;
+    border-radius: 10px; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 24px rgba(167,103,243,0.28);
+  }
+  .submit-btn:hover { opacity: 0.87; transform: translateY(-1px); box-shadow: 0 8px 32px rgba(167,103,243,0.4); }
+  .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  .analyzing-dots::after {
+    content: ''; animation: dots 1.2s steps(4,end) infinite;
+  }
+  @keyframes dots { 0%{content:''} 25%{content:'.'} 50%{content:'..'} 75%{content:'...'} }
+
+  #error-msg { font-size: 12px; color: #d06060; margin-top: 10px; display: none; }
+
+  .results-panel {
+    background: var(--bg-card2); padding: 40px;
+    position: relative; min-height: 560px;
+  }
+
+  .results-empty {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%); text-align: center;
+  }
+  .results-empty-text {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #1e1a28;
+  }
+
+  #results-content { display: none; }
+
+  .rl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+  #res-business { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #352e48; margin-bottom: 22px; }
+
+  #res-hours {
+    font-size: clamp(42px, 5vw, 60px); font-weight: 700;
+    letter-spacing: -0.04em; line-height: 1; color: var(--text); margin-bottom: 6px;
+  }
+  #res-hours span { font-size: 0.42em; font-weight: 400; letter-spacing: 0.03em; color: #352e48; vertical-align: middle; }
+
+  #res-value {
+    font-size: clamp(22px, 2.5vw, 32px); font-weight: 700; letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #c49df8, #a767f3);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 4px;
+  }
+  .rl2 { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; }
+  #res-context { font-size: 12px; color: #352e48; line-height: 1.6; font-weight: 300; margin-bottom: 22px; }
+
+  .rdiv { border: none; border-top: 1px solid rgba(255,255,255,0.04); margin: 18px 0; }
+
+  .priority-item {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 10px; list-style: none;
+    opacity: 0; transform: translateY(6px);
+    animation: fup 0.4s ease forwards;
+  }
+  @keyframes fup { to { opacity:1; transform:translateY(0); } }
+  .pnum { font-size: 11px; font-weight: 700; color: #a767f3; min-width: 20px; }
+  .ptxt { font-size: 13px; color: #c0bad0; font-weight: 500; }
+  .pmeta { font-size: 11px; color: #352e48; }
+
+  .rec-item {
+    margin-bottom: 14px; list-style: none;
+    opacity: 0; transform: translateY(6px);
+    animation: fup 0.4s ease forwards;
+  }
+  .rtitle { font-size: 12px; font-weight: 600; color: #c0bad0; margin-bottom: 3px; }
+  .rdesc { font-size: 12px; color: #352e48; font-weight: 300; line-height: 1.55; }
+
+  .book-section { max-width: 1380px; margin: 24px auto 0; display: none; position: relative; z-index: 1; }
+  .book-section.visible { display: block; }
+
+  .book-banner {
+    background: linear-gradient(135deg, #0c0617 0%, #160c2a 50%, #09050f 100%);
+    border: 1px solid var(--border-purple);
+    border-radius: 16px; padding: 52px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 40px; flex-wrap: wrap; position: relative; overflow: hidden;
+  }
+  .book-banner::before {
+    content: ''; position: absolute;
+    top: -120px; left: -80px; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(134,80,204,0.1) 0%, transparent 65%);
+    pointer-events: none; filter: blur(40px);
+  }
+  .book-next { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #a767f3; margin-bottom: 12px; }
+  .book-title {
+    font-size: clamp(28px, 3.5vw, 48px); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.0; text-transform: uppercase;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #ffffff, #c49df8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    position: relative;
+  }
+  .book-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(167,103,243,0.12);
+    border: 1px solid rgba(167,103,243,0.28);
+    color: #c49df8; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 100px;
+  }
+  .book-btn {
+    background: linear-gradient(135deg, #a767f3, #6b35c4);
+    color: #fff; padding: 18px 40px;
+    font-family: var(--font); font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none; display: inline-flex; align-items: center;
+    gap: 10px; border: none; cursor: pointer; border-radius: 10px;
+    white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+    box-shadow: 0 8px 32px rgba(167,103,243,0.35); position: relative;
+  }
+  .book-btn:hover { opacity: 0.85; transform: translateY(-2px); box-shadow: 0 14px 40px rgba(167,103,243,0.45); }
+
+  .book-note { padding: 14px 48px; }
+  .book-note p { font-size: 11px; color: var(--text-dim); letter-spacing: 0.04em; text-transform: uppercase; }
+  .book-note a { color: #a767f3; text-decoration: none; font-weight: 600; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 24px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 40px; position: relative; z-index: 1;
+  }
+  .fc { font-size: 11px; color: var(--text-dim); letter-spacing: 0.04em; text-transform: uppercase; }
+  .fl { display: flex; gap: 24px; }
+  .fl a { font-size: 11px; color: var(--text-dim); text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+  .fl a:hover { color: #a767f3; }
+
+  @media (max-width: 900px) {
+    .audit-layout { grid-template-columns: 1fr; margin: 0 16px; }
+    .form-panel { border-right: none; border-bottom: 1px solid var(--border); }
+    .results-panel { min-height: 360px; }
+    nav { padding: 0 20px; }
+    .nav-links li:not(:last-child) { display: none; }
+    .page-header { padding: 32px 16px 24px; }
+    .form-panel, .results-panel { padding: 24px 20px; }
+    .book-section { margin: 16px; }
+    .book-banner { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
+    .book-note { padding: 12px 24px; }
+    footer { padding: 20px 16px; flex-direction: column; gap: 14px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="orb orb-hero"></div>
+<div class="orb orb-bottom"></div>
+
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-ring"></div>
+    Arcagen
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="https://cal.com" class="nav-cta">Book a call</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="badge">Free AI Audit — Instant Results</div>
+  <h1>Find Out Exactly How Much Time &amp; Money You're Leaving on the Table</h1>
+  <p>Get your personalized AI automation roadmap instantly. See where your business is bleeding hours — and exactly how to fix it.</p>
+</div>
+
+<div class="audit-layout">
+
+  <div class="form-panel">
+    <div class="panel-title">Tell Us About Your Business</div>
+
+    <div class="form-group">
+      <label class="form-label" for="bname">Business Name</label>
+      <input class="form-input" id="bname" type="text" placeholder="Acme Corp" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="email">Your Email</label>
+      <input class="form-input" id="email" type="email" placeholder="you@company.com">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="industry">Industry</label>
+        <select class="form-input" id="industry">
+          <option value="">Select...</option>
+          <option>Real Estate</option>
+          <option>Legal / Law Firm</option>
+          <option>Healthcare / Medical</option>
+          <option>E-Commerce / Retail</option>
+          <option>Marketing / Agency</option>
+          <option>Financial Services</option>
+          <option>Construction / Trades</option>
+          <option>Consulting</option>
+          <option>SaaS / Tech</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="emp">Employees</label>
+        <select class="form-input" id="emp">
+          <option value="">Select...</option>
+          <option>1-5</option>
+          <option>6-15</option>
+          <option>16-50</option>
+          <option>51-200</option>
+          <option>200+</option>
+        </select>
+      </div>
+    </div>
+
+    <hr class="pain-divider">
+    <div class="pain-title">Rate Your Pain</div>
+    <div class="pain-subtitle">Tap 1–5 for each area. How much does this slow you down?</div>
+
+    <div id="pain-ratings">
+      <div class="pain-row"><span class="pain-label">Lead Follow-Up</span><div class="pain-numbers" data-cat="Lead Follow-Up"><button class="pain-btn" data-v="1">1</button><button class="pain-btn" data-v="2">2</button><button class="pain-btn" data-v="3">3</button><button class="pain-btn" data-v="4">4</button><button class="pain-btn" data-v="5">5</button></div></div>
+      <div class="pain-row"><span class="pain-label">Admin &amp; Scheduling</span><div class="pain-numbers" data-cat="Admin & Scheduling"><button class="pain-btn" data-v="1">1</button><button class="pain-btn" data-v="2">2</button><button class="pain-btn" data-v="3">3</button><button class="pain-btn" data-v="4">4</button><button class="pain-btn" data-v="5">5</button></div></div>
+      <div class="pain-row"><span class="pain-label">People Ops</span><div class="pain-numbers" data-cat="People Ops"><button class="pain-btn" data-v="1">1</button><button class="pain-btn" data-v="2">2</button><button class="pain-btn" data-v="3">3</button><button class="pain-btn" data-v="4">4</button><button class="pain-btn" data-v="5">5</button></div></div>
+      <div class="pain-row"><span class="pain-label">Sales &amp; Marketing</span><div class="pain-numbers" data-cat="Sales & Marketing"><button class="pain-btn" data-v="1">1</button><button class="pain-btn" data-v="2">2</button><button class="pain-btn" data-v="3">3</button><button class="pain-btn" data-v="4">4</button><button class="pain-btn" data-v="5">5</button></div></div>
+      <div class="pain-row"><span class="pain-label">Comms &amp; Email</span><div class="pain-numbers" data-cat="Comms & Email"><button class="pain-btn" data-v="1">1</button><button class="pain-btn" data-v="2">2</button><button class="pain-btn" data-v="3">3</button><button class="pain-btn" data-v="4">4</button><button class="pain-btn" data-v="5">5</button></div></div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="runAudit()">
+      <span id="sbtn-text">Get Your Audit</span>
+    </button>
+    <div id="error-msg"></div>
+  </div>
+
+  <div class="results-panel">
+    <div class="results-empty" id="res-empty">
+      <div class="results-empty-text">Your Results Will Appear Here</div>
+    </div>
+    <div id="results-content">
+      <div class="rl">Your Results</div>
+      <div id="res-business"></div>
+      <div class="rl">Estimated Time Saved</div>
+      <div id="res-hours">— <span>HRS/WK</span></div>
+      <div id="res-value">—</div>
+      <div class="rl2">Annual Value</div>
+      <div id="res-context"></div>
+      <hr class="rdiv">
+      <div class="rl">Priority Automations</div>
+      <ul id="res-priorities"></ul>
+      <hr class="rdiv">
+      <div class="rl">Recommendations</div>
+      <ul id="res-recs"></ul>
+      <hr class="rdiv" style="margin-top:18px;">
+      <a href="https://cal.com" class="submit-btn" style="margin-top:14px;">
+        ↓ Book Your Discovery Call
+        <span style="font-size:11px;font-weight:300;opacity:0.55;margin-left:4px;">15 MIN · AI STRATEGY</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="book-section" id="book-section">
+  <div class="book-banner">
+    <div>
+      <div class="book-next">Next Step</div>
+      <div class="book-title">Book Your<br>Discovery Call</div>
+      <div class="book-pill">15 Min · AI Strategy</div>
+    </div>
+    <a href="https://cal.com" class="book-btn">↓ Book Your Discovery Call</a>
+  </div>
+  <div class="book-note">
+    <p>Can't find a time? Email <a href="mailto:hello@arcagen.ai">hello@arcagen.ai</a></p>
+  </div>
+</div>
+
+<footer>
+  <div class="fc">© 2026 Arcagen AI. All rights reserved.</div>
+  <div class="fl">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Stars
+  (function(){
+    const c = document.getElementById('stars');
+    for(let i=0;i<130;i++){
+      const s=document.createElement('div');
+      s.className='star';
+      const sz=Math.random()*1.8+0.4;
+      s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${sz}px;height:${sz}px;--d:${2+Math.random()*5}s;--dl:-${Math.random()*6}s;--lo:${0.08+Math.random()*0.15};--hi:${0.4+Math.random()*0.5};`;
+      c.appendChild(s);
+    }
+  })();
+
+  // Pain buttons
+  document.querySelectorAll('.pain-numbers').forEach(g=>{
+    g.querySelectorAll('.pain-btn').forEach(b=>{
+      b.addEventListener('click',()=>{
+        g.querySelectorAll('.pain-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+      });
+    });
+  });
+
+  function getData(){
+    const r={};
+    document.querySelectorAll('.pain-numbers').forEach(g=>{
+      const a=g.querySelector('.pain-btn.active');
+      r[g.dataset.cat]=a?parseInt(a.dataset.v):0;
+    });
+    return {
+      business:document.getElementById('bname').value.trim(),
+      email:document.getElementById('email').value.trim(),
+      industry:document.getElementById('industry').value,
+      employees:document.getElementById('emp').value,
+      ratings:r
+    };
+  }
+
+  function validate(d){
+    if(!d.business) return 'Please enter your business name.';
+    if(!d.email||!d.email.includes('@')) return 'Please enter a valid email.';
+    if(!d.industry) return 'Please select your industry.';
+    if(!d.employees) return 'Please select your team size.';
+    if(Object.values(d.ratings).some(v=>v===0)) return 'Please rate all pain areas (1–5).';
+    return null;
+  }
+
+  // ── Hours each pain area costs per employee per week at score 5 (industry-tuned)
+  const AREA_BASE_HRS = {
+    'Lead Follow-Up':      { base: 2.2, empScale: 0.4 },
+    'Admin & Scheduling':  { base: 3.0, empScale: 0.6 },
+    'People Ops':          { base: 1.8, empScale: 0.9 },
+    'Sales & Marketing':   { base: 2.5, empScale: 0.5 },
+    'Comms & Email':       { base: 2.8, empScale: 0.5 },
+  };
+
+  // Industry multipliers — some industries bleed more time in specific areas
+  const INDUSTRY_MULTIPLIERS = {
+    'Real Estate':          { 'Lead Follow-Up':1.6, 'Admin & Scheduling':1.3, 'People Ops':0.8, 'Sales & Marketing':1.4, 'Comms & Email':1.2 },
+    'Legal / Law Firm':     { 'Lead Follow-Up':1.1, 'Admin & Scheduling':1.5, 'People Ops':1.1, 'Sales & Marketing':0.9, 'Comms & Email':1.6 },
+    'Healthcare / Medical': { 'Lead Follow-Up':1.0, 'Admin & Scheduling':1.7, 'People Ops':1.4, 'Sales & Marketing':0.8, 'Comms & Email':1.3 },
+    'E-Commerce / Retail':  { 'Lead Follow-Up':1.3, 'Admin & Scheduling':1.0, 'People Ops':1.0, 'Sales & Marketing':1.6, 'Comms & Email':1.4 },
+    'Marketing / Agency':   { 'Lead Follow-Up':1.4, 'Admin & Scheduling':1.2, 'People Ops':1.0, 'Sales & Marketing':1.5, 'Comms & Email':1.3 },
+    'Financial Services':   { 'Lead Follow-Up':1.3, 'Admin & Scheduling':1.4, 'People Ops':1.1, 'Sales & Marketing':1.1, 'Comms & Email':1.5 },
+    'Construction / Trades':{ 'Lead Follow-Up':1.2, 'Admin & Scheduling':1.6, 'People Ops':1.2, 'Sales & Marketing':1.0, 'Comms & Email':1.1 },
+    'Consulting':           { 'Lead Follow-Up':1.3, 'Admin & Scheduling':1.3, 'People Ops':1.0, 'Sales & Marketing':1.3, 'Comms & Email':1.4 },
+    'SaaS / Tech':          { 'Lead Follow-Up':1.2, 'Admin & Scheduling':1.1, 'People Ops':1.3, 'Sales & Marketing':1.2, 'Comms & Email':1.2 },
+    'Other':                { 'Lead Follow-Up':1.0, 'Admin & Scheduling':1.0, 'People Ops':1.0, 'Sales & Marketing':1.0, 'Comms & Email':1.0 },
+  };
+
+  // Hourly cost per industry (avg fully-loaded employee cost)
+  const INDUSTRY_RATE = {
+    'Real Estate':55,'Legal / Law Firm':95,'Healthcare / Medical':70,
+    'E-Commerce / Retail':48,'Marketing / Agency':65,'Financial Services':85,
+    'Construction / Trades':58,'Consulting':90,'SaaS / Tech':95,'Other':65
+  };
+
+  // Specific recommendations per area per industry
+  const RECS = {
+    'Lead Follow-Up': {
+      'Real Estate':          'Deploy an AI that texts new leads within 90 seconds, qualifies them, and books showings directly into your calendar — no agent involvement needed.',
+      'Legal / Law Firm':     'Use an AI intake bot to qualify prospects, collect case details, and schedule consultations automatically — before your team ever picks up the phone.',
+      'Healthcare / Medical': 'Automate new patient inquiries with an AI that answers FAQs, checks insurance eligibility, and books appointments around the clock.',
+      'E-Commerce / Retail':  'Set up AI-driven abandoned cart sequences and post-purchase follow-ups that trigger automatically based on customer behavior.',
+      'Marketing / Agency':   'Build an AI that responds to inbound leads within minutes, qualifies budget and timeline, and books discovery calls without human hand-off.',
+      'Financial Services':   'Deploy an AI that captures leads from your website, pre-qualifies them against your criteria, and schedules advisor calls automatically.',
+      'Construction / Trades':'Automate quote request responses — AI gathers project scope, sends ballpark estimates, and books site visits while you are on the job.',
+      'Consulting':           'Set up an AI that responds to inbound inquiries, asks scoping questions, and books strategy calls — turning cold leads into warm meetings automatically.',
+      'SaaS / Tech':          'Implement AI-powered lead scoring and automated nurture sequences that adapt messaging based on product usage and signup behavior.',
+      'Other':                'Automate your lead response so every inquiry gets an immediate, personalized reply and a booked next step — no manual effort required.',
+    },
+    'Admin & Scheduling': {
+      'Real Estate':          'Automate showing scheduling, offer paperwork prep, and closing reminders so agents spend zero time on logistics.',
+      'Legal / Law Firm':     'Let AI manage court date reminders, client check-ins, document deadlines, and billing summaries — automatically.',
+      'Healthcare / Medical': 'Replace your front desk scheduling load with AI that handles appointment booking, reminders, and rescheduling without any staff time.',
+      'E-Commerce / Retail':  'Automate supplier order management, inventory alerts, and team scheduling so operations run without daily manual oversight.',
+      'Marketing / Agency':   'Use AI to auto-schedule client calls, generate meeting agendas from briefs, and send project status updates on a set cadence.',
+      'Financial Services':   'Automate client review scheduling, compliance deadline reminders, and document collection workflows.',
+      'Construction / Trades':'Deploy AI scheduling that coordinates crews, sends job-site briefings, and tracks material delivery confirmations automatically.',
+      'Consulting':           'Automate client onboarding tasks, project milestone reminders, and weekly status report generation so delivery runs itself.',
+      'SaaS / Tech':          'Use AI to manage sprint scheduling, automate standup summaries, and track deliverable deadlines across teams.',
+      'Other':                'Automate your recurring scheduling and admin tasks so your team stops losing hours to logistics every single week.',
+    },
+    'People Ops': {
+      'Real Estate':          'Automate agent onboarding with AI-driven checklists, MLS training sequences, and licensing deadline reminders.',
+      'Legal / Law Firm':     'Use AI to handle paralegal onboarding, CLE tracking, timesheet reminders, and HR document collection automatically.',
+      'Healthcare / Medical': 'Automate staff credentialing renewals, compliance training reminders, and onboarding paperwork collection with AI workflows.',
+      'E-Commerce / Retail':  'Deploy AI-managed onboarding flows for seasonal staff — training modules, policy sign-offs, and shift assignments handled automatically.',
+      'Marketing / Agency':   'Automate contractor onboarding, NDA collection, project briefing delivery, and time-tracking reminders.',
+      'Financial Services':   'Use AI to manage compliance training schedules, license renewal alerts, and new hire onboarding documentation.',
+      'Construction / Trades':'Automate safety certification tracking, site induction workflows, and subcontractor compliance document collection.',
+      'Consulting':           'Build AI-driven onboarding that delivers frameworks, sets 30/60/90 day milestones, and collects feedback — without HR involvement.',
+      'SaaS / Tech':          'Automate engineering onboarding, tool access provisioning, and 90-day check-in surveys so new hires ramp faster.',
+      'Other':                'Let AI handle your onboarding workflows, HR document collection, and compliance reminders — zero manual coordination.',
+    },
+    'Sales & Marketing': {
+      'Real Estate':          'Deploy AI to write listing descriptions, create social content from property photos, and run targeted ad campaigns automatically.',
+      'Legal / Law Firm':     'Use AI to write thought leadership content, manage LinkedIn outreach sequences, and track referral partner engagement.',
+      'Healthcare / Medical': 'Automate patient education content, review request campaigns, and local SEO updates with AI-driven workflows.',
+      'E-Commerce / Retail':  'Use AI to generate product copy, run dynamic ad creative tests, and trigger personalised email campaigns based on purchase history.',
+      'Marketing / Agency':   'Deploy AI to write first drafts, generate ad variants, schedule posts, and produce performance reports — cutting production time in half.',
+      'Financial Services':   'Use AI to personalise outbound campaigns, generate market commentary, and automate drip sequences for different client segments.',
+      'Construction / Trades':'Automate case study creation from completed jobs, manage Google review requests, and run local ad campaigns with AI-generated creative.',
+      'Consulting':           'Build AI-powered content pipelines that turn client work into case studies, LinkedIn posts, and email sequences automatically.',
+      'SaaS / Tech':          'Deploy AI to run multi-channel outbound, personalise demo follow-ups, and generate product-led growth email sequences at scale.',
+      'Other':                'Use AI to create content, run outbound sequences, and manage your marketing pipeline — without adding headcount.',
+    },
+    'Comms & Email': {
+      'Real Estate':          'Set up AI to draft client update emails, respond to buyer enquiries, and send transaction milestone notifications automatically.',
+      'Legal / Law Firm':     'Deploy AI email triage that categorises client messages by urgency, drafts responses for attorney review, and tracks follow-up deadlines.',
+      'Healthcare / Medical': 'Automate patient communication — appointment confirmations, pre-visit instructions, and post-care follow-ups — with zero staff effort.',
+      'E-Commerce / Retail':  'Use AI to handle order status enquiries, return requests, and review responses so your support inbox runs on autopilot.',
+      'Marketing / Agency':   'Deploy AI to draft client update emails, flag urgent messages, and send automated project milestone notifications.',
+      'Financial Services':   'Set up AI-powered email workflows for client statements, meeting follow-ups, and portfolio update communications.',
+      'Construction / Trades':'Automate site update emails to clients, subcontractor briefings, and change order notifications — no manual writing required.',
+      'Consulting':           'Use AI to draft proposal follow-ups, weekly client updates, and re-engagement sequences for lapsed prospects.',
+      'SaaS / Tech':          'Deploy AI to handle tier-1 support tickets, draft bug acknowledgement emails, and automate onboarding communication sequences.',
+      'Other':                'Let AI triage your inbox, draft replies, and send follow-up sequences — so communication never becomes a bottleneck.',
+    },
+  };
+
+  const BENCHMARKS = {
+    'Real Estate':          ['Real Estate teams typically spend 18–22 hrs/week on tasks AI can fully automate.', 'Top-performing Real Estate agencies have cut admin time by 60% using AI automation.'],
+    'Legal / Law Firm':     ['Law firms lose an average of 30% of billable hours to non-billable admin work AI can handle.', 'Legal teams using AI automation recover 12–20 hrs/week per fee earner.'],
+    'Healthcare / Medical': ['Medical practices spend up to 40% of staff time on scheduling and admin — almost all of it automatable.', 'Healthcare operators using AI have reduced front-desk workload by over 50%.'],
+    'E-Commerce / Retail':  ['E-commerce brands using AI automation cut operational overhead by an average of 35%.', 'Retail operations teams recover 10–18 hrs/week by automating order and inventory workflows.'],
+    'Marketing / Agency':   ['Agencies using AI automation produce 3× more output with the same team size.', 'Marketing teams reclaim 12–20 hrs/week by automating content production and reporting.'],
+    'Financial Services':   ['Financial services firms spend up to 25% of team time on compliance and reporting AI can automate.', 'Advisors using AI reclaim 8–14 hrs/week from administrative and client communication tasks.'],
+    'Construction / Trades':['Construction businesses lose an average of 15 hrs/week per manager to scheduling and coordination.', 'Trades companies using AI automation cut project admin time by 40%.'],
+    'Consulting':           ['Consulting firms using AI automation deliver projects 30% faster without adding staff.', 'Consultants reclaim 10–16 hrs/week by automating client communication and reporting.'],
+    'SaaS / Tech':          ['SaaS companies using AI in their GTM motion convert 2× more leads with the same team.', 'Tech teams reclaim 12–18 hrs/week by automating support, onboarding, and outbound workflows.'],
+    'Other':                ['Businesses using AI automation save an average of 10–20 hrs/week across operations.', 'Companies that automate early grow 40% faster than those that wait.'],
+  };
+
+  function computeResults(d) {
+    const empCount = {'1-5':3,'6-15':10,'16-50':30,'51-200':80,'200+':200}[d.employees] || 5;
+    const rate = INDUSTRY_RATE[d.industry] || 65;
+    const mults = INDUSTRY_MULTIPLIERS[d.industry] || INDUSTRY_MULTIPLIERS['Other'];
+    const benchmarks = BENCHMARKS[d.industry] || BENCHMARKS['Other'];
+
+    // Compute hours per area
+    const areaResults = Object.entries(d.ratings).map(([area, score]) => {
+      const { base, empScale } = AREA_BASE_HRS[area];
+      const industryMult = mults[area] || 1;
+      const scoreFraction = score / 5;
+      // Hours = base * score_fraction * industry_mult * (1 + empScale * log(empCount))
+      const hrs = base * scoreFraction * industryMult * (1 + empScale * Math.log(empCount + 1));
+      const hrsRounded = Math.round(hrs * 10) / 10;
+      const dollars = Math.round(hrsRounded * rate * 52 / 100) * 100;
+      return { area, score, hours: hrsRounded, dollars };
+    });
+
+    // Sort by hours descending
+    areaResults.sort((a, b) => b.hours - a.hours);
+
+    const totalHrs = Math.round(areaResults.reduce((s, a) => s + a.hours, 0) * 10) / 10;
+    const totalAnnual = Math.round(totalHrs * rate * 52 / 100) * 100;
+
+    // Pick benchmark sentence based on total hours (higher = more dramatic stat)
+    const benchmark = benchmarks[totalHrs > 15 ? 0 : 1];
+
+    // Build recommendations from highest-pain areas
+    const recs = areaResults.map(({ area }) => ({
+      title: area,
+      description: (RECS[area] && RECS[area][d.industry]) || RECS[area]['Other'] || 'AI automation can significantly reduce manual overhead in this area.'
+    }));
+
+    return { hoursPerWeek: totalHrs, annualValue: totalAnnual, context: benchmark, priorities: areaResults, recommendations: recs };
+  }
+
+  function runAudit() {
+    const d = getData();
+    const err = validate(d);
+    const eEl = document.getElementById('error-msg');
+    if (err) { eEl.textContent = err; eEl.style.display = 'block'; return; }
+    eEl.style.display = 'none';
+
+    const btn = document.getElementById('submit-btn');
+    const bt = document.getElementById('sbtn-text');
+    btn.disabled = true;
+    bt.className = 'analyzing-dots';
+    bt.textContent = 'ANALYZING';
+
+    document.getElementById('res-empty').style.display = 'none';
+    document.getElementById('results-content').style.display = 'block';
+    document.getElementById('res-business').textContent = d.business;
+    document.getElementById('res-hours').innerHTML = '— <span>HRS/WK</span>';
+    document.getElementById('res-value').textContent = '—';
+    document.getElementById('res-context').textContent = '';
+    document.getElementById('res-priorities').innerHTML = '';
+    document.getElementById('res-recs').innerHTML = '';
+
+    // Brief delay so the "analyzing" state is visible
+    setTimeout(() => {
+      const result = computeResults(d);
+      render(result);
+      btn.disabled = false;
+      bt.className = '';
+      bt.textContent = 'Re-Run Audit';
+      document.getElementById('book-section').classList.add('visible');
+      setTimeout(() => document.getElementById('book-section').scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+    }, 1400);
+  }
+
+  function render(r) {
+    document.getElementById('res-hours').innerHTML = `${r.hoursPerWeek} <span>HRS/WK</span>`;
+    document.getElementById('res-value').textContent = '$' + Number(r.annualValue).toLocaleString();
+    document.getElementById('res-context').textContent = r.context;
+
+    const pl = document.getElementById('res-priorities');
+    r.priorities.forEach((p, i) => {
+      const li = document.createElement('li');
+      li.className = 'priority-item';
+      li.style.animationDelay = `${i * 0.08}s`;
+      li.innerHTML = `<span class="pnum">0${i+1}</span><span><span class="ptxt">${p.area}</span><span class="pmeta"> — ${p.hours} hrs/wk, $${Number(p.dollars).toLocaleString()}/yr</span></span>`;
+      pl.appendChild(li);
+    });
+
+    const rl = document.getElementById('res-recs');
+    r.recommendations.forEach((rec, i) => {
+      const li = document.createElement('li');
+      li.className = 'rec-item';
+      li.style.animationDelay = `${0.4 + i * 0.08}s`;
+      li.innerHTML = `<div class="rtitle">${rec.title}</div><div class="rdesc">${rec.description}</div>`;
+      rl.appendChild(li);
+    });
+  }
+</script>
+</body>
+</html>
