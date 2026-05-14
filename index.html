@@ -706,6 +706,23 @@
     return { hoursPerWeek: totalHrs, annualValue: totalAnnual, context: benchmark, priorities: areaResults, recommendations: recs };
   }
 
+  async function trackAuditLead(lead, result) {
+    try {
+      await fetch('/api/audit-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          lead,
+          result,
+          source: window.location.href
+        })
+      });
+    } catch (error) {
+      console.error('Lead capture failed', error);
+    }
+  }
+
   function runAudit() {
     const d = getData();
     const err = validate(d);
@@ -731,6 +748,7 @@
     // Brief delay so the "analyzing" state is visible
     setTimeout(() => {
       const result = computeResults(d);
+      trackAuditLead(d, result);
       render(result);
       btn.disabled = false;
       bt.className = '';
