@@ -1,5 +1,7 @@
 const LEAD_EMAIL = process.env.LEAD_EMAIL || "support@arcargen.ai";
-const LEAD_WEBHOOK_URL = process.env.LEAD_WEBHOOK_URL || "";
+const LEAD_WEBHOOK_URL =
+  process.env.LEAD_WEBHOOK_URL ||
+  "https://script.google.com/macros/s/AKfycbyFt8E-6eMogb4FHSiWQHWg2P41aCkOtVbLEZA2Efof0ABw-cQeFuIfrrhFoLNczJgnrA/exec";
 
 function sendJson(response, statusCode, payload) {
   response.statusCode = statusCode;
