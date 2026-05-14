@@ -84,21 +84,15 @@
   }
 
   .logo {
-    display: flex; align-items: center; gap: 10px;
-    text-decoration: none; font-size: 17px; font-weight: 600;
-    color: var(--text); letter-spacing: -0.01em;
+    display: flex; align-items: center;
+    width: 190px; min-width: 0;
+    text-decoration: none;
   }
-  .logo-ring {
-    width: 28px; height: 28px;
-    background: linear-gradient(135deg, #a767f3, #5b2fa0);
-    border-radius: 50%; position: relative; flex-shrink: 0;
-  }
-  .logo-ring::after {
-    content: ''; position: absolute; inset: 4px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(255,255,255,0.4);
-    border-top-color: transparent; border-right-color: transparent;
-    transform: rotate(-30deg);
+  .logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
@@ -377,6 +371,7 @@
     .form-panel { border-right: none; border-bottom: 1px solid var(--border); }
     .results-panel { min-height: 360px; }
     nav { padding: 0 20px; }
+    .logo { width: 160px; }
     .nav-links li:not(:last-child) { display: none; }
     .page-header { padding: 32px 16px 24px; }
     .form-panel, .results-panel { padding: 24px 20px; }
@@ -395,8 +390,7 @@
 
 <nav>
   <a href="#" class="logo">
-    <div class="logo-ring"></div>
-    Arcagen
+    <img src="Arcagen%20final%20logo.png" alt="Arcagen">
   </a>
   <ul class="nav-links">
     <li><a href="#">Home</a></li>
